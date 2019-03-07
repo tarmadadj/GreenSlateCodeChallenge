@@ -53,17 +53,23 @@ public class Project {
 	public void setUserProjects(Set<UserProject> userProjects) {
 		this.userProjects = userProjects;
 	}
-	public Project( Date startDate, Date endDate, int credits, Set<UserProject> userProjects) {
+	public Project( Date startDate, Date endDate, int credits) {
 		super();
 		
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.credits = credits;
-		this.userProjects = userProjects;
 	}
 	public Project() {
 		
 	}
     
-    
+	 public boolean equals(Object o) {
+	    	if(o==null)
+	    		return false;
+	    	else {
+	    		Project other = (Project)o;
+	    		return other.getId().equals(this.getId());
+	    	}
+	    }
 }

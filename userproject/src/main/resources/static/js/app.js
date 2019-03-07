@@ -6,8 +6,7 @@ function vueApp(){
 			return {
 				users:null,
 				selected:'0',
-				projects:null,
-				info: null
+				projects:null
 			}
 		},
 		

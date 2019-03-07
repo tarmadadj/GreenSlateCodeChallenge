@@ -74,6 +74,14 @@ public class UserProject {
 	public void setId(UserProjectKey id) {
 		this.id = id;
 	}
+
+	public UserProject(User user, Project project, boolean isActive, Date assignedDate) {
+		super();
+		this.user = user;
+		this.project = project;
+		this.isActive = isActive;
+		this.assignedDate = assignedDate;
+	}
 	 
-	 
+	public UserProject() {} 
 }

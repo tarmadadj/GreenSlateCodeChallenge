@@ -55,4 +55,13 @@ public class User {
     public User() {
     	
     }
+    
+    public boolean equals(Object o) {
+    	if(o==null)
+    		return false;
+    	else {
+    		User other = (User)o;
+    		return other.getId().equals(this.getId());
+    	}
+    }
 }
