@@ -9,7 +9,18 @@ import org.springframework.stereotype.Service;
 import com.greenslate.codechallenge.userproject.entity.User;
 import com.greenslate.codechallenge.userproject.exception.UserNotFoundException;
 import com.greenslate.codechallenge.userproject.repository.UserRepository;
-
+/**
+ * Service which is in charge of performing tasks related to the User entity
+ * The Service annotation marks this class as a Service in a MVC pattern which will handle most of the business logic 
+ * related to User Entities
+ * Controllers don't actually reference this class as we want to avoid tight coupling, so this is an implementation which
+ * is designed around JPA/Hibernate. We could  replace this class with a MongoDB implementation or a file system, Queue REST consumer 
+ * or whatever may be needed in the future.
+ * I also use this service as a method to expose only the Repository methods needed for this problem
+ * 
+ * @author Mario Segura
+ *
+ */
 @Service
 public class JpaUserServiceImpl implements UserService {
 	@Autowired

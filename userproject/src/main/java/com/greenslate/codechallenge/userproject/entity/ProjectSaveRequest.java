@@ -1,7 +1,12 @@
 package com.greenslate.codechallenge.userproject.entity;
 
 import java.util.Date;
-
+/**
+ * A little Plain Object class which maps new projects without being connected to the database
+ * it helps to have more control of which calls to save are for creating or updating
+ * @author Mario Segura 
+ *
+ */
 public class ProjectSaveRequest {
 	private Date startDate;
 	private Date endDate;

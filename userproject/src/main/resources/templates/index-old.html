@@ -1,0 +1,135 @@
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- Include Bootstrap -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+		integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+		integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+	
+</head>
+
+<body>
+		<div class="jumbotron jumbotron-fluid">
+  			<div class="container">
+				<h2 class="display-4">User Projects</h2>
+				
+			  </div>
+	</div>
+	<div id="contents-main">
+			
+		<div id="app" class="container" >
+			<div class="row">
+				
+				<div class="col-sm"><select v-model="selected"  @change="onChange($event)" class="form-control">
+						<option disabled value="0">--</option>
+						<option :value="user.id" v-for="(user, index) in users">{{ user.firstName }} {{ user.lastName }}</option>
+					</select>
+				</div>
+			</div>
+			<div class="row">	
+				<div class="col-sm">
+					
+
+					<table id="projects-table"  class="table">
+						<thead>
+							<tr>
+								<th>Project Id</th>
+								<th>Start Date</th>
+								<th>Time to Start</th>
+								<th>End Date</th>
+								<th>Credits</th>
+								<th>Status</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr v-for="project in projects">
+								<td>{{project.project.id}}</td>
+								<td>{{project.project.startDate | format-date }}</td>
+								<td>{{project.project.startDate | date-diff(project.assignedDate) }}</td>
+								<td>{{project.project.endDate | format-date}}</td>
+								<td>{{project.project.credits}}</td>
+								<td>{{project.isActive | active-filter}}</td>
+							</tr>
+							</tbody>
+					</table>
+		
+		
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script src="https://rawgit.com/moment/moment/2.2.1/min/moment.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+	<script src="https://unpkg.com/vue-select@latest"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.21.1/babel.min.js"></script>
+	
+	<script type="text/babel">
+		
+		Vue.filter('format-date', function (value) {
+			if (!value) return ''
+			let dateMomment = moment(value)
+			return dateMomment.format('MMMM Do YYYY'); // March 6th 2019, 11:56:30 pm
+		})
+		Vue.filter('date-diff', function (value, otherDate) {
+			if (!value) return ''
+			var one_day=1000*60*60*24;
+			let date1=new Date(value);
+			let date2=new Date(otherDate);
+			  // Convert both dates to milliseconds
+			let date1_ms = date1.getTime();
+			let date2_ms = date2.getTime();
+	
+			// Calculate the difference in milliseconds
+			let difference_ms = date2_ms - date1_ms;
+				
+			// Convert back to days and return
+			let daysToStart =  Math.round(difference_ms/one_day); 
+			
+			if (daysToStart>0) return daysToStart
+			else return 'Started'
+		})
+		Vue.filter('active-filter', function (value) {
+			if (value) return 'Active'
+			else  return 'Inactive'
+			})
+		var app =new Vue({
+			el: '#app',
+			data () {
+				return {
+					users:null,
+					selected:'0',
+					projects:null,
+					info: null
+				}
+			},
+			
+			mounted () {
+				axios
+					.get('/api/users/')
+					.then(response => (this.users = response.data))
+			},
+			methods: {
+				onChange(event) {
+					console.log(event.target.value)
+					let request=('/api/users/'+event.target.value+'/projects/'); 
+					console.log(request)
+					axios
+					.get(request)
+					.then(response => (this.projects = response.data))
+				}
+			}
+
+		}) 
+	</script>  
+</body>
+
+
+</html>

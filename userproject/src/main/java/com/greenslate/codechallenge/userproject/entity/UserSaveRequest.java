@@ -1,5 +1,9 @@
 package com.greenslate.codechallenge.userproject.entity;
-
+/**
+ * A Plain Object i use to map save user requests
+ * @author Mario Segura
+ *
+ */
 public class UserSaveRequest {
 	private String firstName;
 	private String lastName;
